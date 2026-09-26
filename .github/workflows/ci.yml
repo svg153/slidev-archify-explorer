@@ -21,6 +21,9 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run build
-      - run: npm run dev -- --port 3030 --base /demo/ > /tmp/slidev.log 2>&1 &
-      - run: npm run test:component
+      - run: |
+          npx slidev --port 3030 --base /demo/ > /tmp/slidev.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          npm run test:component
 
