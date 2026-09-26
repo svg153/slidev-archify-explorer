@@ -19,4 +19,16 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - run: npm run build
+      - run: |
+          ./node_modules/.bin/slidev --port 3030 --base /demo/ > /tmp/slidev.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://localhost:3030/demo/ > /dev/null; then break; fi
+            sleep 1
+          done
+          if ! curl --fail --silent http://localhost:3030/demo/ > /dev/null; then cat /tmp/slidev.log; exit 1; fi
+          npm run test:component
+
