@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "AI SDLC como control plane",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "person",
+      "type": "external",
+      "label": "Equipo",
+      "sublabel": "decide",
+      "pos": [
+        40,
+        280
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "repo",
+      "type": "database",
+      "label": "Git / repo",
+      "sublabel": "fuente de verdad",
+      "pos": [
+        250,
+        280
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "context",
+      "type": "backend",
+      "label": "Contexto + specs",
+      "sublabel": "evidencia",
+      "pos": [
+        460,
+        280
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "agent",
+      "type": "backend",
+      "label": "Agentes",
+      "sublabel": "trabajo",
+      "pos": [
+        670,
+        280
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "policy",
+      "type": "security",
+      "label": "Identidad + policy",
+      "sublabel": "permisos mínimos",
+      "pos": [
+        880,
+        160
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "Gateway",
+      "sublabel": "credenciales · ruta · coste",
+      "pos": [
+        880,
+        280
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "model",
+      "type": "cloud",
+      "label": "Modelos",
+      "sublabel": "proveedores",
+      "pos": [
+        1090,
+        280
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "mcp",
+      "type": "cloud",
+      "label": "MCP / tools",
+      "sublabel": "permitidas",
+      "pos": [
+        1090,
+        400
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "verification",
+      "type": "security",
+      "label": "Tests / gates",
+      "sublabel": "evidencia",
+      "pos": [
+        670,
+        440
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "metrics",
+      "type": "database",
+      "label": "Métricas",
+      "sublabel": "trazas",
+      "pos": [
+        880,
+        440
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "feedback",
+      "type": "database",
+      "label": "Feedback",
+      "sublabel": "aprendizaje",
+      "pos": [
+        460,
+        440
+      ],
+      "size": [
+        150,
+        64
+      ]
+    }
+  ],
+  "boundaries": [],
+  "connections": [
+    {
+      "id": "c1",
+      "from": "person",
+      "to": "repo",
+      "label": "define",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c2",
+      "from": "repo",
+      "to": "context",
+      "label": "aporta"
+    },
+    {
+      "id": "c3",
+      "from": "context",
+      "to": "agent",
+      "label": "orienta",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c4",
+      "from": "agent",
+      "to": "gateway",
+      "label": "solicita"
+    },
+    {
+      "id": "c5",
+      "from": "policy",
+      "to": "gateway",
+      "label": "aplica",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelAt": [
+        955,
+        252
+      ]
+    },
+    {
+      "id": "c6",
+      "from": "gateway",
+      "to": "model",
+      "label": "enruta"
+    },
+    {
+      "id": "c7",
+      "from": "gateway",
+      "to": "mcp",
+      "label": "autoriza",
+      "variant": "security",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "c8",
+      "from": "agent",
+      "to": "verification",
+      "label": "verifica",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelAt": [
+        745,
+        392
+      ]
+    },
+    {
+      "id": "c9",
+      "from": "verification",
+      "to": "metrics",
+      "label": "mide",
+      "variant": "dashed"
+    },
+    {
+      "id": "c10",
+      "from": "metrics",
+      "to": "feedback",
+      "label": "aprende",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "via": [
+        [
+          955,
+          520
+        ],
+        [
+          535,
+          520
+        ]
+      ],
+      "labelAt": [
+        745,
+        518
+      ]
+    },
+    {
+      "id": "c11",
+      "from": "feedback",
+      "to": "context",
+      "label": "recalibra",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "route": "straight"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Control",
+      "items": [
+        "Permisos, modelos, herramientas y coste en un punto observable"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Bucle",
+      "items": [
+        "Cada cambio produce evidencia que mejora el siguiente cambio"
+      ]
+    }
+  ]
+}
