@@ -26,9 +26,9 @@ jobs:
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           for attempt in {1..30}; do
-            if curl --fail --silent http://127.0.0.1:3030/demo/ > /dev/null; then break; fi
+            if curl --fail --silent http://localhost:3030/demo/ > /dev/null; then break; fi
             sleep 1
           done
-          if ! curl --fail --silent http://127.0.0.1:3030/demo/ > /dev/null; then cat /tmp/slidev.log; exit 1; fi
+          if ! curl --fail --silent http://localhost:3030/demo/ > /dev/null; then cat /tmp/slidev.log; exit 1; fi
           npm run test:component
 

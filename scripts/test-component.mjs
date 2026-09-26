@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { chromium } from 'playwright-chromium'
 
-const baseUrl = process.env.SLIDEV_URL ?? 'http://127.0.0.1:3030/demo/'
+const baseUrl = process.env.SLIDEV_URL ?? 'http://localhost:3030/demo/'
 const deadline = Date.now() + 30_000
 while (Date.now() < deadline) {
   try {
