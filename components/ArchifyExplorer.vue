@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { useNav } from '@slidev/client'
 
 const props = withDefaults(defineProps<{
   src: string
   title: string
+  preview?: string
+  alt?: string
   buttonLabel?: string
   closeLabel?: string
 }>(), {
+  alt: undefined,
   buttonLabel: 'Explore diagram',
   closeLabel: 'Close',
 })
 
 const dialog = ref<HTMLDialogElement>()
 const { isPrintMode } = useNav()
-const interactiveUrl = computed(() => `${import.meta.env.BASE_URL}${props.src.replace(/^\/+/, '')}`)
+const slots = useSlots()
+const withBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
+const interactiveUrl = computed(() => withBase(props.src))
+const previewUrl = computed(() => props.preview ? withBase(props.preview) : undefined)
+const hasPreview = computed(() => !!props.preview || !!slots.default)
 
 function close() {
   dialog.value?.close()
@@ -22,8 +29,27 @@ function close() {
 </script>
 
 <template>
-  <button v-if="!isPrintMode" class="explore-button" type="button" @click="dialog?.showModal()">
-    {{ buttonLabel }}
+  <template v-if="isPrintMode">
+    <slot v-if="slots.default" />
+    <img v-else-if="previewUrl" class="diagram-preview" :src="previewUrl" :alt="alt ?? title" />
+  </template>
+
+  <button
+    v-else
+    class="explore-button"
+    :class="{ 'explore-button--preview': hasPreview }"
+    type="button"
+    :aria-label="`${buttonLabel}: ${title}`"
+    :title="`${buttonLabel}: ${title}`"
+    @click="dialog?.showModal()"
+  >
+    <template v-if="hasPreview">
+      <span class="preview-action"><span class="preview-action__badge">{{ buttonLabel }}</span></span>
+      <slot>
+        <img class="diagram-preview" :src="previewUrl" :alt="alt ?? title" />
+      </slot>
+    </template>
+    <template v-else>{{ buttonLabel }}</template>
   </button>
 
   <dialog v-if="!isPrintMode" ref="dialog" class="explorer-dialog" :aria-label="title" @click.self="close">
@@ -50,6 +76,49 @@ function close() {
 
 .explore-button {
   white-space: nowrap;
+}
+
+.explore-button:focus-visible,
+.close-button:focus-visible {
+  outline: 3px solid #ff9d22;
+  outline-offset: 3px;
+}
+
+.explore-button--preview {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  cursor: zoom-in;
+  font-size: inherit;
+  padding: 0;
+  text-align: left;
+  white-space: normal;
+}
+
+.preview-action {
+  display: flex;
+  justify-content: flex-end;
+  margin: -.75rem 0 .15rem;
+}
+
+.preview-action__badge {
+  border: 1px solid rgb(255 157 34 / 55%);
+  border-radius: 999px;
+  background: #171550;
+  color: #ff9d22;
+  font-size: .58em;
+  padding: .28em .62em;
+  white-space: nowrap;
+}
+
+.diagram-preview {
+  display: block;
+  max-height: 375px;
+  width: 100%;
+  object-fit: contain;
 }
 
 .explorer-dialog {

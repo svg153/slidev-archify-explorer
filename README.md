@@ -1,6 +1,6 @@
 # Slidev Archify Explorer
 
-**Open an Archify diagram as a full interactive view from a Slidev slide.** Keep the slide clean and readable; let the audience explore the diagram when they want more detail. The static SVG remains in the deck for PDF export.
+**Make an Archify diagram a clickable, print-safe preview in Slidev.** Authors provide the static SVG and interactive HTML once; the preview itself opens the full Archify viewer in a dialog.
 
 [![CI](https://github.com/svg153/slidev-archify-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/svg153/slidev-archify-explorer/actions/workflows/ci.yml)
 [![Latest release](https://img.shields.io/github/v/release/svg153/slidev-archify-explorer?display_name=tag)](https://github.com/svg153/slidev-archify-explorer/releases)
@@ -10,12 +10,13 @@
 
 ## What it does
 
-`ArchifyExplorer.vue` adds an **Explore diagram** button. It opens a native dialog containing Archify's standalone HTML viewer, so viewers can focus nodes, follow relationships, search, and use the Archify controls without leaving the presentation.
+`ArchifyExplorer.vue` renders the static SVG with a visible **Explore diagram** affordance. Clicking anywhere on the preview opens a native dialog containing Archify's standalone HTML viewer, so viewers can focus nodes, follow relationships, search, and use the Archify controls without leaving the presentation.
 
 - Works with Archify standalone HTML files; the HTML carries its viewer with it.
 - Respects Slidev's configured base path.
-- Uses native `<dialog>` and an accessible, titled iframe.
-- Hides the button and dialog in Slidev PDF/print mode; keep a static SVG on the slide as the export-safe view.
+- Uses a keyboard-operable native button and `<dialog>`, with an accessible preview, labelled dialog, and titled iframe.
+- Keeps the static preview in Slidev PDF/print mode and omits the interactive controls.
+- Supports a default preview prop and a slot for custom preview/layout content.
 - Button and close labels can be localized.
 
 ## Try the demo
@@ -31,30 +32,49 @@ The demo pairs `public/diagrams/ai-sdlc-control-plane.svg` (static slide/PDF ima
 
 ## Use it in your deck
 
-1. Copy `components/ArchifyExplorer.vue` into your Slidev project's `components/` directory.
-2. Put the standalone Archify HTML and its corresponding SVG under `public/`.
-3. Embed the static SVG, then add the component:
+Install the addon from this GitHub repository:
+
+```sh
+npm install --save-dev github:svg153/slidev-archify-explorer
+```
+
+Declare the addon in the deck frontmatter:
+
+```yaml
+addons:
+  - slidev-addon-archify-explorer
+```
+
+Put the standalone Archify HTML and SVG under `public/`, then use one component:
 
 ```md
-<img src="/diagrams/system.svg" alt="System architecture" />
-
 <ArchifyExplorer
+  preview="diagrams/system.svg"
   src="diagrams/system.html"
   title="System architecture"
+  alt="System architecture diagram"
   button-label="Explore diagram"
   close-label="Close"
 />
 ```
 
-`src` is a path under `public/`, not a remote URL. Slidev's base URL is prepended automatically. The default labels are English; pass `button-label` and `close-label` to localize them. The SVG is your static fallback—this component only provides the interactive view.
+`preview` and `src` are paths under `public/`, not remote URLs. Slidev's base URL is prepended automatically. Clicking anywhere on the SVG opens the explorer; the badge remains visible to communicate that behavior. The default labels are English; pass `button-label` and `close-label` to localize them.
+
+For a custom preview or layout, provide slot content instead of `preview`; the slot is preserved in print mode:
+
+```md
+<ArchifyExplorer src="diagrams/system.html" title="System architecture">
+  <div class="custom-preview">...</div>
+</ArchifyExplorer>
+```
 
 ## Commands
 
 | Command | Description |
 | --- | --- |
-| `npm run dev` | Start the demo presentation |
-| `npm run build` | Build the static Slidev deck |
-| `npm run export` | Export the deck to PDF |
+| `npm run dev` | Start the addon demo presentation |
+| `npm run build` | Build the demo deck |
+| `npm run export` | Export the demo deck to PDF |
 
 Requires Node.js 22.
 
@@ -62,7 +82,7 @@ Requires Node.js 22.
 
 Issues and pull requests are welcome. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages and PR titles, for example `feat: support custom button labels`. See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-Releases and version tags are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). Releases are published on GitHub; this repository is not currently an npm package.
+Release tags and GitHub releases are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). The package is currently consumed directly from GitHub rather than published to npm.
 
 ## License
 

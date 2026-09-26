@@ -36,7 +36,7 @@ transition: fade
 }
 
 .demo-layout .diagram-frame img {
-  max-height: 375px;
+  max-height: 260px;
   width: 100%;
   object-fit: contain;
 }
@@ -54,10 +54,14 @@ transition: fade
   <div class="eyebrow">Slidev + Archify</div>
   <h1>Explore the architecture, node by node.</h1>
   <div class="diagram-frame">
-    <img src="/diagrams/ai-sdlc-control-plane.svg" alt="AI SDLC control plane architecture" />
+    <ArchifyExplorer
+      preview="diagrams/ai-sdlc-control-plane.svg"
+      src="diagrams/ai-sdlc-control-plane.html"
+      title="AI SDLC control plane"
+      alt="AI SDLC control plane architecture"
+    />
   </div>
   <div class="explore-row">
-    <span>The slide stays presentation-ready; the full diagram opens on demand.</span>
-    <ArchifyExplorer src="diagrams/ai-sdlc-control-plane.html" title="AI SDLC control plane" />
+    <span>The static preview is clickable; the full diagram opens on demand.</span>
   </div>
 </div>

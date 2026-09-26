@@ -1,15 +1,20 @@
 {
-  "name": "slidev-archify-explorer-demo",
+  "name": "slidev-addon-archify-explorer",
   "version": "0.0.0-development",
   "private": true,
   "description": "One-slide Slidev example for the Archify Explorer component",
   "engines": {
     "node": "22.x"
   },
+  "keywords": [
+    "slidev-addon",
+    "slidev"
+  ],
   "scripts": {
     "dev": "slidev",
     "build": "slidev build",
     "export": "slidev export --output archify-explorer-demo.pdf",
+    "test:component": "node scripts/test-component.mjs",
     "prepare": "husky"
   },
   "devDependencies": {
