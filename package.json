@@ -4,7 +4,7 @@
   "private": true,
   "description": "One-slide Slidev example for the Archify Explorer component",
   "engines": {
-    "node": "24.x"
+    "node": ">=22"
   },
   "keywords": [
     "slidev-addon",

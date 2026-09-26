@@ -76,7 +76,7 @@ For a custom preview or layout, provide slot content instead of `preview`; the s
 | `npm run build` | Build the demo deck |
 | `npm run export` | Export the demo deck to PDF |
 
-Requires Node.js 22.
+Requires Node.js 22 or newer.
 
 ## Contributing
 
