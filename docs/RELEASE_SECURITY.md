@@ -8,13 +8,13 @@ This document records the current release trust boundaries for `slidev-addon-arc
 2. Merging a Conventional Commit to `main` starts `.github/workflows/release.yml`; Semantic Release calculates the next version and creates the Git tag, npm package (when enabled), and GitHub release.
 3. The workflow uses actions pinned to full commit SHAs, and repository settings require SHA-pinned actions. Dependabot updates GitHub Actions dependencies.
 4. GitHub's automatic workflow token has `contents: write` for tags/releases. `issues: write` and `pull-requests: write` are retained for the GitHub Semantic Release plugin's documented permissions. `id-token: write` is used by npm Trusted Publishing when npm publishing is enabled. The release job disables package-manager caching.
-5. npm publication is controlled by `NPM_PUBLISH_ENABLED`. The npm Trusted Publisher configuration is external to this repository and must match this repository and `release.yml`; see [npm publishing](NPM_PUBLISHING.md).
+5. npm publication is controlled by `NPM_PUBLISH_ENABLED`. The verified npm Trusted Publisher is scoped to `svg153` / `slidev-archify-explorer` / `release.yml`; see [npm publishing](NPM_PUBLISHING.md).
 6. GitHub immutable releases are enabled. The active `protect-semver-tag-integrity` ruleset prevents updates and deletions of `v*` tags; the owner is the sole bypass actor for recovery. Tag creation remains allowed to repository writers so the release workflow can create tags.
 
-## Current gaps and decisions
+## Verified controls and decisions
 
-- npm OIDC provenance is not yet verified on a real automated version; tracked by [issue #16](https://github.com/svg153/slidev-archify-explorer/issues/16). Check npm's Trusted Publisher configuration in its UI; registry metadata cannot prove that setup before a real release.
-- A private disposable repository successfully published an immutable `v1.2.1` GitHub release using the same pinned workflow and Semantic Release configuration; `gh release verify` succeeded. No assets are uploaded by this repository. Production immutability is now enabled. After publication, release assets are locked; deleting an immutable release permanently consumes its tag name.
+- npm Trusted Publishing/OIDC was verified on the real `1.2.1` release: the workflow confirmed OIDC token exchange, npm published a SLSA provenance attestation, and `npm audit signatures` verified the registry signature and attestation. The attestation identifies this repo, `release.yml`, and source commit `0add8f5f1b25de84b199fd8a03c2a96d1195686b`; see [npm publishing](NPM_PUBLISHING.md).
+- The production `v1.2.1` GitHub release is immutable and `gh release verify` succeeded. A private disposable repository had already validated the same release flow. No assets are uploaded by this repository. After publication, release assets are locked; deleting an immutable release permanently consumes its tag name.
 - The same sandbox proved release creation works with the update/deletion tag ruleset. Unauthorized tag update and delete requests were rejected. On personal repositories, GitHub does not accept the GitHub Actions integration as a ruleset bypass actor (HTTP 422), so tag creation is not restricted; the active ruleset protects updates/deletions and only the owner can bypass for recovery.
 - No separate SBOM is published. The package currently has no demonstrated consumer need for a second artifact; an SBOM would inventory components, not prove they are vulnerability-free.
 
@@ -23,14 +23,14 @@ This document records the current release trust boundaries for `slidev-addon-arc
 The controls are mostly native settings, not custom code:
 
 - GitHub repository settings: immutable releases, `main` and `v*` rulesets, SHA-pinned Actions policy, CodeQL, and workflow token permissions.
-- npm package settings: Trusted Publisher identity (owner/repository/workflow); this must be confirmed in npm's UI.
+- npm package settings: Trusted Publisher identity (owner/repository/workflow), confirmed by the successful OIDC publish and attestation.
 - Repository files: Semantic Release config, workflow permissions, action SHA pins, documentation, and verification commands. No custom publishing service or long-lived npm token is needed.
 
-The disposable-repository test is complete. Do not create a dummy release to test npm: verify npm provenance after the next legitimate release instead.
+The disposable-repository and first production release tests are complete. Do not create a dummy release to test npm; verify provenance on each future legitimate release.
 
 ## Verification commands
 
-For a real npm release, verify that npm exposes an attestation for the expected version:
+For a published npm version, verify that npm exposes an attestation:
 
 ```sh
 npm view slidev-addon-archify-explorer@<version> dist.attestations --json
