@@ -57,7 +57,7 @@ function close() {
       <strong>{{ title }}</strong>
       <button class="close-button" type="button" @click="close">{{ closeLabel }}</button>
     </header>
-    <iframe :src="interactiveUrl" :title="`${title}, interactive diagram`" allow="fullscreen" />
+    <iframe :src="interactiveUrl" :title="`${title}, interactive diagram`" loading="lazy" allow="fullscreen" />
   </dialog>
 </template>
 

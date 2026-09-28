@@ -14,6 +14,11 @@ assert.ok((await fetch(baseUrl)).ok, `Slidev demo did not start at ${baseUrl}`)
 const browser = await chromium.launch({ headless: true })
 try {
   const page = await browser.newPage()
+  const interactiveRequests = []
+  page.on('request', request => {
+    if (request.url().endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
+      interactiveRequests.push(request.url())
+  })
   await page.goto(baseUrl)
   const trigger = page.getByRole('button', { name: 'Explore diagram: AI SDLC control plane' })
   const preview = trigger.locator('img')
@@ -21,9 +26,13 @@ try {
   assert.equal(await preview.getAttribute('alt'), 'AI SDLC control plane architecture')
   assert.match(await preview.getAttribute('src'), /\/demo\/diagrams\/ai-sdlc-control-plane\.svg$/)
   assert.ok(await preview.evaluate(image => image.complete && image.naturalWidth > 0), 'static preview must load')
+  assert.equal(interactiveRequests.length, 0, 'interactive diagram should not load before opening')
 
   await trigger.focus()
+  const interactiveRequest = page.waitForRequest(request =>
+    request.url().endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
   await page.keyboard.press('Enter')
+  await interactiveRequest
   const dialog = page.locator('dialog[open]')
   await dialog.waitFor()
   assert.equal(await dialog.getAttribute('aria-label'), 'AI SDLC control plane')
