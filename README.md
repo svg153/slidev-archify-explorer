@@ -35,9 +35,9 @@ The demo pairs `public/diagrams/ai-sdlc-control-plane.svg` (static slide/PDF ima
 
 Install the published package from npm:
 
-``sh
+```sh
 npm install --save-dev slidev-addon-archify-explorer
-``
+```
 
 Declare the addon in the deck frontmatter:
 
