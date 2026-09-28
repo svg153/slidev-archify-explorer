@@ -3,7 +3,7 @@ const plugins = [
   ["@semantic-release/release-notes-generator", { preset: "conventionalcommits" }],
 ];
 
-// Keep npm publishing off until the owner bootstraps the package and enables OIDC.
+// npm publishing stays opt-in until the repository variable enables Trusted Publishing.
 if (process.env.NPM_PUBLISH_ENABLED === "true") {
   plugins.push("@semantic-release/npm");
 }
