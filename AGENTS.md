@@ -2,8 +2,7 @@
 
 ## Language
 
-- Write repository documentation, issue and pull request content, commit messages, and code comments in English.
-- Keep examples, demo UI, and presentation content in another language only when that language is an explicit product/demo requirement.
+- Keep all human-authored repository content in English, including documentation, issues, pull requests, commit messages, code comments, examples, and demo or presentation copy. Preserve proper names and verbatim third-party quotations as needed.
 
 ## Commits and releases
 
