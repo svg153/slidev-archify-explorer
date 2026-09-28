@@ -8,7 +8,7 @@ The release workflow continues to create GitHub releases, but npm publishing is 
 
 1. Recheck the name, inspect `npm pack --dry-run`, and review the exact source/version to publish. In a disposable clean checkout, set the package version to the latest GitHub release tag (without its leading `v`) with `npm version <version> --no-git-tag-version`, then inspect the tarball again.
 2. With the package owner's npm account and 2FA, run `npm publish` manually from that reviewed source/version. This is the only token-based step; it is intentionally not automated because npm Trusted Publishing can only be configured for an existing package.
-3. In npm package settings, add a GitHub Actions Trusted Publisher with owner `svg153`, repository `slidev-archify-explorer`, and workflow filename `release.yml`. The repository must remain public for npm provenance.
+3. In npm package settings, add a GitHub Actions Trusted Publisher with owner `svg153`, repository `slidev-archify-explorer`, and workflow filename `release.yml`. Allow the `npm publish` action (Semantic Release invokes direct publish, not staged publish). The repository must remain public for npm provenance.
 4. Verify the package and publisher configuration, then set the repository Actions variable `NPM_PUBLISH_ENABLED` to `true`. Subsequent semantic-release runs publish to npm and GitHub from the same Conventional Commit-derived version.
 5. Change the README install command to `npm install --save-dev slidev-addon-archify-explorer` after the package is confirmed live.
 
