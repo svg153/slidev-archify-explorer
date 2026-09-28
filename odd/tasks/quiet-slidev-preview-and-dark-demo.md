@@ -10,7 +10,7 @@ The Slidev preview has an overlaid “Explore diagram” badge although its imag
 - Remove the unconditional visual badge while preserving the native button, accessible label, focus state, zoom cursor, and no-preview text fallback.
 - Set the example slide's viewer URL to Archify's supported `theme=dark&embed=1` mode.
 - Update README and the component-site API description.
-- Add regression checks for no badge, zoom cursor, accessible activation, and both viewer query parameters.
+- Add regression checks for no visible action label, zoom cursor, accessible activation, and both viewer query parameters; derive asset paths from the configured base URL.
 - Do not modify the standalone generated Archify HTML; it already handles these parameters.
 
 ## Constraints
@@ -29,13 +29,13 @@ Create issues in `svg153/slidev-archify-explorer`, implement in this worktree, c
 ### T1 — Remove visible preview badge and correct docs
 - [x] Remove badge markup and obsolete CSS.
 - [x] Update README and website API copy.
-- [x] Add test assertions that the badge is absent while the native button remains labelled, keyboard operable, and shows `zoom-in` cursor.
+- [x] Add test assertions that no visible action label appears while the native button remains labelled, keyboard operable, shows `zoom-in` cursor, and resolves assets relative to the configured base URL.
 - **Route:** delegated direct implementation (writer trigger: behavior/tests/docs span 2+ non-trivial files; mapping trigger satisfied by read-only Luna exploration).
 - **Verification:** `npm run test:component`, `npm run build`, `npm run build:pages`, `npm run test:pages`.
 
 ### T2 — Match embedded demo viewer to dark slide
 - [x] Append `?theme=dark&embed=1` to the example viewer URL.
-- [x] Assert the iframe URL preserves both query parameters; visually verify the opened viewer is dark and embed chrome is minimized.
+- [x] Assert the iframe URL preserves both query parameters and is base-path-aware; visually verify the opened viewer is dark and embed chrome is minimized.
 - **Route:** same delegated implementation slice as T1 because changes share the same component/demo experience and CI test file.
 - **Verification:** component browser test, build and export checks; inspect the embedded public-demo equivalent after local verification.
 
@@ -51,7 +51,8 @@ Create issues in `svg153/slidev-archify-explorer`, implement in this worktree, c
 - RED observed: `npm run test:component` failed on the new badge-absence assertion before implementation.
 - GREEN/checks reported by Luna: `npm run test:component`, `npm run build`, `npm run build:pages`, `npm run test:pages`, and `npm run export` all passed; export emitted existing non-fatal FloatingVue/Wake Lock console warnings.
 - Visual verification: local Slidev opened the dialog at `/1`; verified preview has no badge, iframe URL is `?theme=dark&embed=1`, and the rendered Archify diagram uses the dark palette with compact embed chrome.
-- Work-unit commits: `8b3161a` (T1, `fix(explorer): remove preview badge`); `798f180` (T2, `feat(demo): use dark embedded Archify viewer`).
-- RDD/native review assessment remains pending: `gentle-ai` is unavailable in this environment; do not merge until the repository's enabled review gate can be assessed and satisfied.
-- Next: verify review assessment availability, then push and open the single PR closing #30 and #31. Merge only if ordinary protections and the applicable review gate permit it.
+- Independent review: identified fixed `/demo/` expectations and a selector-specific badge check; addressed by deriving expected asset paths from `SLIDEV_URL` and asserting the preview has no visible text. `npm run test:component` passed against local root base `http://localhost:3031/`.
+- Work-unit commits: `8b3161a` (T1, `fix(explorer): remove preview badge`); `798f180` (T2, `feat(demo): use dark embedded Archify viewer`); `855456a` (review follow-up, `test(explorer): make preview checks base-path aware`).
+- RDD mode/status and assessment were attempted, but `gentle-ai` is not recognized in this environment. Treat the work-unit review as due; the required preflight STATUS cannot be obtained without the missing CLI. Do not merge or bypass protections while this gate is unresolved.
+- Next: push and open the authorized single PR closing #30 and #31; keep it unmerged until the applicable native review gate and ordinary GitHub protections are satisfied.
 
