@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101426">
+    <meta name="description" content="Install Archify Explorer for Slidev, explore its API, and try the live interactive architecture presentation.">
+    <meta property="og:title" content="Archify Explorer for Slidev">
+    <meta property="og:description" content="Make architecture diagrams explorable from your Slidev presentation.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://svg153.github.io/slidev-archify-explorer/media/archify-explorer-demo.png">
+    <title>Archify Explorer for Slidev</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#top" aria-label="Archify Explorer home">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M11 29 20 11l9 18M14 24h12" />
+            <circle cx="11" cy="29" r="3" />
+            <circle cx="20" cy="10" r="3" />
+            <circle cx="29" cy="29" r="3" />
+          </svg>
+          <span>Archify <span class="brand-light">Explorer</span></span>
+        </a>
+        <nav class="primary-nav" aria-label="Main navigation">
+          <a href="#features">Features</a>
+          <a href="#install">Installation</a>
+          <a href="#api">API</a>
+          <a href="#demo">Live demo</a>
+        </nav>
+        <a class="header-link" href="https://github.com/svg153/slidev-archify-explorer" target="_blank" rel="noreferrer">
+          GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero section-wrap" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot"></span> A tiny Slidev addon with a bigger view</p>
+          <h1>Let the audience <span>explore</span> your architecture.</h1>
+          <p class="hero-lede">Keep a crisp, print-safe diagram on the slide. Open the full Archify viewer only when someone wants to dig deeper.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#demo">Explore the live demo <span aria-hidden="true">↓</span></a>
+            <a class="button button-secondary" href="#install">Install the addon</a>
+          </div>
+          <ul class="hero-facts" aria-label="Component highlights">
+            <li>Slidev</li><li>Vue 3</li><li>Native dialog</li><li>MIT licensed</li>
+          </ul>
+        </div>
+        <figure class="hero-visual">
+          <div class="window-bar" aria-hidden="true"><span></span><span></span><span></span><i>slidev · archify</i></div>
+          <img src="./media/archify-explorer-demo.png" alt="A Slidev presentation slide with an Archify diagram and its interactive explorer open">
+          <figcaption><span class="caption-mark" aria-hidden="true">↗</span> A static preview, one click away from the full diagram.</figcaption>
+        </figure>
+      </section>
+
+      <section class="demo-section section-wrap" id="demo" aria-labelledby="demo-title">
+        <div class="section-heading demo-heading">
+          <div>
+            <p class="eyebrow">See it in context</p>
+            <h2 id="demo-title">A real Slidev deck, right here.</h2>
+            <p>Use the presentation controls or arrow keys to move through the example. Select the diagram to open its interactive Archify view.</p>
+          </div>
+          <a class="button button-secondary" href="./demo/" target="_blank" rel="noreferrer">Open presentation <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="presentation-frame">
+          <iframe src="./demo/" title="Navigable Slidev demo presentation for Archify Explorer" allow="fullscreen" loading="lazy"></iframe>
+        </div>
+        <p class="frame-note"><span class="key-hint">←</span><span class="key-hint">→</span> Navigate slides · Click the diagram to explore its nodes and relationships.</p>
+      </section>
+
+      <section class="features-section section-wrap" id="features" aria-labelledby="features-title">
+        <div class="section-heading">
+          <p class="eyebrow">Small surface, useful details</p>
+          <h2 id="features-title">One slide preview. The whole model when you need it.</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-index">01</span>
+            <h3>Clear at a glance</h3>
+            <p>Use an SVG preview on the slide, so the architecture stays legible and the presentation remains lightweight.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-index">02</span>
+            <h3>Explore on demand</h3>
+            <p>Open Archify’s standalone viewer in a native dialog to focus nodes, follow relationships, and use its controls.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-index">03</span>
+            <h3>Ready for the handout</h3>
+            <p>Slidev print and PDF output keeps the static diagram and omits the interactive dialog.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="install-section section-wrap" id="install" aria-labelledby="install-title">
+        <div class="section-heading">
+          <p class="eyebrow">Get started</p>
+          <h2 id="install-title">Add it to a deck in a minute.</h2>
+          <p>Install the addon, declare it in your Slidev frontmatter, then point the component at files in your deck’s public folder.</p>
+        </div>
+        <div class="setup-grid">
+          <div class="setup-steps">
+            <div class="setup-step"><span>1</span><div><h3>Install the package</h3><pre><code>npm install --save-dev slidev-addon-archify-explorer</code></pre></div></div>
+            <div class="setup-step"><span>2</span><div><h3>Register the addon</h3><pre><code>addons:
+  - slidev-addon-archify-explorer</code></pre></div></div>
+            <div class="setup-step"><span>3</span><div><h3>Use it in a slide</h3><pre><code>&lt;ArchifyExplorer
+  preview="diagrams/system.svg"
+  src="diagrams/system.html"
+  title="System architecture"
+  alt="System architecture diagram"
+/&gt;</code></pre></div></div>
+          </div>
+          <aside class="setup-aside">
+            <span class="aside-icon" aria-hidden="true">↗</span>
+            <h3>Your files stay yours.</h3>
+            <p>Put the standalone Archify HTML and its SVG preview under <code>public/</code>. The component respects Slidev’s base URL and never needs an external diagram service.</p>
+            <a href="https://github.com/svg153/slidev-archify-explorer#use-it-in-your-deck" target="_blank" rel="noreferrer">Read the complete README <span aria-hidden="true">→</span></a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="api-section section-wrap" id="api" aria-labelledby="api-title">
+        <div class="section-heading">
+          <p class="eyebrow">Component API</p>
+          <h2 id="api-title">A few props. No framework of its own.</h2>
+          <p>Pass local files from your deck’s public directory. The default slot lets you provide a custom preview or layout.</p>
+        </div>
+        <div class="table-scroll" role="region" aria-label="Component props" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">Prop / slot</th><th scope="col">Type</th><th scope="col">Default</th><th scope="col">Purpose</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><code>src</code></th><td><code>string</code> · required</td><td>—</td><td>Path to the standalone Archify HTML viewer.</td></tr>
+              <tr><th scope="row"><code>title</code></th><td><code>string</code> · required</td><td>—</td><td>Accessible name for the explorer dialog.</td></tr>
+              <tr><th scope="row"><code>preview</code></th><td><code>string</code></td><td>—</td><td>Optional SVG shown as the clickable slide preview.</td></tr>
+              <tr><th scope="row"><code>alt</code></th><td><code>string</code></td><td><code>title</code></td><td>Alternative text for the preview image.</td></tr>
+              <tr><th scope="row"><code>buttonLabel</code></th><td><code>string</code></td><td><code>Explore diagram</code></td><td>Localized action text shown on the preview.</td></tr>
+              <tr><th scope="row"><code>closeLabel</code></th><td><code>string</code></td><td><code>Close</code></td><td>Localized label for the dialog close button.</td></tr>
+              <tr><th scope="row"><code>default slot</code></th><td>Vue template</td><td>—</td><td>Custom preview content; retained in print mode.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="closing-cta section-wrap" aria-labelledby="closing-title">
+        <div>
+          <p class="eyebrow">Open source · MIT</p>
+          <h2 id="closing-title">Bring the diagram into the conversation.</h2>
+          <p>Try the demo, add the addon to a deck, or help improve the component.</p>
+        </div>
+        <div class="hero-actions">
+          <a class="button button-primary" href="./demo/" target="_blank" rel="noreferrer">Open live demo <span aria-hidden="true">↗</span></a>
+          <a class="button button-secondary" href="https://github.com/svg153/slidev-archify-explorer" target="_blank" rel="noreferrer">View source on GitHub</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer section-wrap">
+      <a class="brand" href="#top"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M11 29 20 11l9 18M14 24h12" /><circle cx="11" cy="29" r="3" /><circle cx="20" cy="10" r="3" /><circle cx="29" cy="29" r="3" /></svg><span>Archify <span class="brand-light">Explorer</span></span></a>
+      <p>Made for Slidev. Licensed under MIT.</p>
+      <a href="https://github.com/svg153/slidev-archify-explorer/blob/main/LICENSE">License</a>
+    </footer>
+  </body>
+</html>

@@ -2,6 +2,7 @@
 theme: seriph
 title: Archify Explorer for Slidev
 transition: fade
+layout: default
 ---
 
 <style>
@@ -11,6 +12,8 @@ transition: fade
 }
 
 .demo-layout h1 {
+  color: #fff !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   margin-bottom: 0.25em;
   font-size: 2.3rem;
 }
@@ -36,17 +39,9 @@ transition: fade
 }
 
 .demo-layout .diagram-frame img {
-  max-height: 260px;
+  max-height: 275px !important;
   width: 100%;
   object-fit: contain;
-}
-
-.demo-layout .explore-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: #d6d4f7;
-  font-size: 0.9rem;
 }
 </style>
 
@@ -60,8 +55,5 @@ transition: fade
       title="AI SDLC control plane"
       alt="AI SDLC control plane architecture"
     />
-  </div>
-  <div class="explore-row">
-    <span>The static preview is clickable; the full diagram opens on demand.</span>
   </div>
 </div>

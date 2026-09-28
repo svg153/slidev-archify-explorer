@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/svg153/slidev-archify-explorer.git"
   },
-  "homepage": "https://github.com/svg153/slidev-archify-explorer#readme",
+  "homepage": "https://svg153.github.io/slidev-archify-explorer/",
   "license": "MIT",
   "files": [
     "components/ArchifyExplorer.vue",
@@ -28,8 +28,10 @@
   "scripts": {
     "dev": "slidev",
     "build": "slidev build",
+    "build:pages": "node scripts/build-pages.mjs",
     "export": "slidev export --output archify-explorer-demo.pdf",
     "test:component": "node scripts/test-component.mjs",
+    "test:pages": "node scripts/test-pages.mjs",
     "prepare": "husky"
   },
   "devDependencies": {
