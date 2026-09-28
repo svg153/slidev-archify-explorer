@@ -86,7 +86,7 @@ Requires Node.js 22 or newer.
 
 Issues and pull requests are welcome. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages and PR titles, for example `feat: support custom button labels`. See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-Release tags and GitHub releases are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). npm releases are published by GitHub Actions when npm Trusted Publishing is configured; see [npm release setup](docs/NPM_PUBLISHING.md).
+Release tags and GitHub releases are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). npm releases are published by GitHub Actions when npm Trusted Publishing is configured; see [npm release setup](docs/NPM_PUBLISHING.md) and the [release security notes](docs/RELEASE_SECURITY.md).
 
 ## License
 
