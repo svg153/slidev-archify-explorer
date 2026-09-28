@@ -1,15 +1,30 @@
 {
   "name": "slidev-addon-archify-explorer",
   "version": "0.0.0-development",
-  "private": true,
-  "description": "One-slide Slidev example for the Archify Explorer component",
+  "description": "Explore interactive Archify architecture diagrams from Slidev slides",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/svg153/slidev-archify-explorer.git"
+  },
+  "homepage": "https://github.com/svg153/slidev-archify-explorer#readme",
+  "license": "MIT",
+  "files": [
+    "components/ArchifyExplorer.vue",
+    "media/archify-explorer-demo.png"
+  ],
   "engines": {
     "node": ">=22"
   },
   "keywords": [
+    "archify",
+    "architecture-diagrams",
+    "slidev",
     "slidev-addon",
-    "slidev"
+    "vue"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "dev": "slidev",
     "build": "slidev build",

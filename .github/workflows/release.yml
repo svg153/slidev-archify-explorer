@@ -8,6 +8,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  id-token: write
 
 concurrency:
   group: semantic-release-main
@@ -16,6 +17,8 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      NPM_PUBLISH_ENABLED: ${{ vars.NPM_PUBLISH_ENABLED }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -24,6 +27,9 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - name: Install npm with Trusted Publishing support
+        if: vars.NPM_PUBLISH_ENABLED == 'true'
+        run: npm install --global 'npm@^11.5.1'
       - run: npm ci
       - run: npx semantic-release
         env:

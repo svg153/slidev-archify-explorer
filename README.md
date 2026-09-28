@@ -32,7 +32,7 @@ The demo pairs `public/diagrams/ai-sdlc-control-plane.svg` (static slide/PDF ima
 
 ## Use it in your deck
 
-Install the addon from this GitHub repository:
+The first npm release has not been approved or published yet. Until then, install the addon from this GitHub repository:
 
 ```sh
 npm install --save-dev github:svg153/slidev-archify-explorer
@@ -82,7 +82,7 @@ Requires Node.js 22 or newer.
 
 Issues and pull requests are welcome. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages and PR titles, for example `feat: support custom button labels`. See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-Release tags and GitHub releases are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). The package is currently consumed directly from GitHub rather than published to npm.
+Release tags and GitHub releases are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). npm publishing is prepared but stays disabled until the owner bootstraps the package and enables Trusted Publishing; see [npm release setup](docs/NPM_PUBLISHING.md). Once the first npm release is live, install with `npm install --save-dev slidev-addon-archify-explorer`.
 
 ## License
 
