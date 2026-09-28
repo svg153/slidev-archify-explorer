@@ -3,6 +3,7 @@
 **Make an Archify diagram a clickable, print-safe preview in Slidev.** Authors provide the static SVG and interactive HTML once; the preview itself opens the full Archify viewer in a dialog.
 
 [![CI](https://github.com/svg153/slidev-archify-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/svg153/slidev-archify-explorer/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/slidev-addon-archify-explorer)](https://www.npmjs.com/package/slidev-addon-archify-explorer)
 [![Latest release](https://img.shields.io/github/v/release/svg153/slidev-archify-explorer?display_name=tag)](https://github.com/svg153/slidev-archify-explorer/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -32,10 +33,10 @@ The demo pairs `public/diagrams/ai-sdlc-control-plane.svg` (static slide/PDF ima
 
 ## Use it in your deck
 
-The first npm release has not been approved or published yet. Until then, install the addon from this GitHub repository:
+Install the published package from npm:
 
 ```sh
-npm install --save-dev github:svg153/slidev-archify-explorer
+npm install --save-dev slidev-addon-archify-explorer
 ```
 
 Declare the addon in the deck frontmatter:
@@ -82,7 +83,7 @@ Requires Node.js 22 or newer.
 
 Issues and pull requests are welcome. Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages and PR titles, for example `feat: support custom button labels`. See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-Release tags and GitHub releases are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). npm publishing is prepared but stays disabled until the owner bootstraps the package and enables Trusted Publishing; see [npm release setup](docs/NPM_PUBLISHING.md). Once the first npm release is live, install with `npm install --save-dev slidev-addon-archify-explorer`.
+Release tags and GitHub releases are generated from Conventional Commits with [semantic-release](https://github.com/semantic-release/semantic-release). npm releases are published by GitHub Actions when npm Trusted Publishing is configured; see [npm release setup](docs/NPM_PUBLISHING.md).
 
 ## License
 
