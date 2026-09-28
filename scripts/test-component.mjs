@@ -16,7 +16,7 @@ try {
   const page = await browser.newPage()
   const interactiveRequests = []
   page.on('request', request => {
-    if (request.url().endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
+    if (new URL(request.url()).pathname.endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
       interactiveRequests.push(request.url())
   })
   await page.goto(baseUrl)
@@ -32,13 +32,16 @@ try {
 
   await trigger.focus()
   const interactiveRequest = page.waitForRequest(request =>
-    request.url().endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
+    new URL(request.url()).pathname.endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
   await page.keyboard.press('Enter')
   await interactiveRequest
   const dialog = page.locator('dialog[open]')
   await dialog.waitFor()
   assert.equal(await dialog.getAttribute('aria-label'), 'AI SDLC control plane')
-  assert.match(await dialog.locator('iframe').getAttribute('src'), /\/demo\/diagrams\/ai-sdlc-control-plane\.html$/)
+  const iframeUrl = new URL(await dialog.locator('iframe').getAttribute('src'), baseUrl)
+  assert.equal(iframeUrl.pathname, '/demo/diagrams/ai-sdlc-control-plane.html')
+  assert.equal(iframeUrl.searchParams.get('theme'), 'dark')
+  assert.equal(iframeUrl.searchParams.get('embed'), '1')
   await page.keyboard.press('Escape')
   await page.waitForFunction(() => !document.querySelector('dialog')?.open)
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Explore diagram: AI SDLC control plane')

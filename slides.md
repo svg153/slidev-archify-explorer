@@ -51,7 +51,7 @@ layout: default
   <div class="diagram-frame">
     <ArchifyExplorer
       preview="diagrams/ai-sdlc-control-plane.svg"
-      src="diagrams/ai-sdlc-control-plane.html"
+      src="diagrams/ai-sdlc-control-plane.html?theme=dark&embed=1"
       title="AI SDLC control plane"
       alt="AI SDLC control plane architecture"
     />
