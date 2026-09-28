@@ -53,6 +53,8 @@ Create issues in `svg153/slidev-archify-explorer`, implement in this worktree, c
 - Visual verification: local Slidev opened the dialog at `/1`; verified preview has no badge, iframe URL is `?theme=dark&embed=1`, and the rendered Archify diagram uses the dark palette with compact embed chrome.
 - Independent review: identified fixed `/demo/` expectations and a selector-specific badge check; addressed by deriving expected asset paths from `SLIDEV_URL` and asserting the preview has no visible text. `npm run test:component` passed against local root base `http://localhost:3031/`.
 - Work-unit commits: `8b3161a` (T1, `fix(explorer): remove preview badge`); `798f180` (T2, `feat(demo): use dark embedded Archify viewer`); `855456a` (review follow-up, `test(explorer): make preview checks base-path aware`).
+- Tracking commits: `1e33017`, `3f42735`.
+- Pull request: [#32](https://github.com/svg153/slidev-archify-explorer/pull/32), draft, closing #30 and #31; initial GitHub CI, CodeQL, and Conventional Commit checks were in progress when recorded.
 - RDD mode/status and assessment were attempted, but `gentle-ai` is not recognized in this environment. Treat the work-unit review as due; the required preflight STATUS cannot be obtained without the missing CLI. Do not merge or bypass protections while this gate is unresolved.
-- Next: push and open the authorized single PR closing #30 and #31; keep it unmerged until the applicable native review gate and ordinary GitHub protections are satisfied.
+- Next: update the PR with this tracking commit, wait for checks, then resolve the native review gate before any merge. Keep the PR unmerged while that gate is unresolved.
 
