@@ -2,6 +2,8 @@
 
 **Make an Archify diagram a clickable, print-safe preview in Slidev.** Authors provide the static SVG and interactive HTML once; the preview itself opens the full Archify viewer in a dialog.
 
+[Component site and live demo](https://svg153.github.io/slidev-archify-explorer/) · [Open the presentation](https://svg153.github.io/slidev-archify-explorer/demo/)
+
 [![CI](https://github.com/svg153/slidev-archify-explorer/actions/workflows/ci.yml/badge.svg)](https://github.com/svg153/slidev-archify-explorer/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/slidev-addon-archify-explorer)](https://www.npmjs.com/package/slidev-addon-archify-explorer)
 [![Latest release](https://img.shields.io/github/v/release/svg153/slidev-archify-explorer?display_name=tag)](https://github.com/svg153/slidev-archify-explorer/releases)
@@ -75,6 +77,7 @@ For a custom preview or layout, provide slot content instead of `preview`; the s
 | --- | --- |
 | `npm run dev` | Start the addon demo presentation |
 | `npm run build` | Build the demo deck |
+| `npm run build:pages` | Build the component site and hosted demo into `dist/` |
 | `npm run export` | Export the demo deck to PDF |
 
 Requires Node.js 22 or newer.

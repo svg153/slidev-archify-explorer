@@ -19,8 +19,9 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npm run build:pages
+      - run: npm run test:pages
       - run: npx playwright install --with-deps chromium
-      - run: npm run build
       - run: |
           ./node_modules/.bin/slidev --port 3030 --base /demo/ > /tmp/slidev.log 2>&1 &
           server_pid=$!
