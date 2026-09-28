@@ -2,6 +2,8 @@ import assert from 'node:assert/strict'
 import { chromium } from 'playwright-chromium'
 
 const baseUrl = process.env.SLIDEV_URL ?? 'http://localhost:3030/demo/'
+const previewPath = new URL('diagrams/ai-sdlc-control-plane.svg', baseUrl).pathname
+const interactivePath = new URL('diagrams/ai-sdlc-control-plane.html', baseUrl).pathname
 const deadline = Date.now() + 30_000
 while (Date.now() < deadline) {
   try {
@@ -16,27 +18,32 @@ try {
   const page = await browser.newPage()
   const interactiveRequests = []
   page.on('request', request => {
-    if (request.url().endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
+    if (new URL(request.url()).pathname === interactivePath)
       interactiveRequests.push(request.url())
   })
   await page.goto(baseUrl)
   const trigger = page.getByRole('button', { name: 'Explore diagram: AI SDLC control plane' })
   const preview = trigger.locator('img')
   await trigger.waitFor()
+  assert.equal((await trigger.innerText()).trim(), '', 'preview should not show a visible action label')
+  assert.equal(await trigger.evaluate(button => getComputedStyle(button).cursor), 'zoom-in', 'preview should advertise zoom interaction')
   assert.equal(await preview.getAttribute('alt'), 'AI SDLC control plane architecture')
-  assert.match(await preview.getAttribute('src'), /\/demo\/diagrams\/ai-sdlc-control-plane\.svg$/)
+  assert.equal(new URL(await preview.getAttribute('src'), baseUrl).pathname, previewPath)
   assert.ok(await preview.evaluate(image => image.complete && image.naturalWidth > 0), 'static preview must load')
   assert.equal(interactiveRequests.length, 0, 'interactive diagram should not load before opening')
 
   await trigger.focus()
   const interactiveRequest = page.waitForRequest(request =>
-    request.url().endsWith('/demo/diagrams/ai-sdlc-control-plane.html'))
+    new URL(request.url()).pathname === interactivePath)
   await page.keyboard.press('Enter')
   await interactiveRequest
   const dialog = page.locator('dialog[open]')
   await dialog.waitFor()
   assert.equal(await dialog.getAttribute('aria-label'), 'AI SDLC control plane')
-  assert.match(await dialog.locator('iframe').getAttribute('src'), /\/demo\/diagrams\/ai-sdlc-control-plane\.html$/)
+  const iframeUrl = new URL(await dialog.locator('iframe').getAttribute('src'), baseUrl)
+  assert.equal(iframeUrl.pathname, interactivePath)
+  assert.equal(iframeUrl.searchParams.get('theme'), 'dark')
+  assert.equal(iframeUrl.searchParams.get('embed'), '1')
   await page.keyboard.press('Escape')
   await page.waitForFunction(() => !document.querySelector('dialog')?.open)
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Explore diagram: AI SDLC control plane')

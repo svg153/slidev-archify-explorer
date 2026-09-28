@@ -44,7 +44,6 @@ function close() {
     @click="dialog?.showModal()"
   >
     <template v-if="hasPreview">
-      <span class="preview-action"><span class="preview-action__badge">{{ buttonLabel }}</span></span>
       <slot>
         <img class="diagram-preview" :src="previewUrl" :alt="alt ?? title" />
       </slot>
@@ -96,22 +95,6 @@ function close() {
   padding: 0;
   text-align: left;
   white-space: normal;
-}
-
-.preview-action {
-  display: flex;
-  justify-content: flex-end;
-  margin: -.75rem 0 .15rem;
-}
-
-.preview-action__badge {
-  border: 1px solid rgb(255 157 34 / 55%);
-  border-radius: 999px;
-  background: #171550;
-  color: #ff9d22;
-  font-size: .58em;
-  padding: .28em .62em;
-  white-space: nowrap;
 }
 
 .diagram-preview {

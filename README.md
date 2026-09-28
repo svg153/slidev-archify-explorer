@@ -13,7 +13,7 @@
 
 ## What it does
 
-`ArchifyExplorer.vue` renders the static SVG with a visible **Explore diagram** affordance. Clicking anywhere on the preview opens a native dialog containing Archify's standalone HTML viewer, so viewers can focus nodes, follow relationships, search, and use the Archify controls without leaving the presentation.
+`ArchifyExplorer.vue` renders the static SVG as a clickable preview. Clicking anywhere on the preview opens a native dialog containing Archify's standalone HTML viewer, so viewers can focus nodes, follow relationships, search, and use the Archify controls without leaving the presentation.
 
 - Works with Archify standalone HTML files; the HTML carries its viewer with it.
 - Respects Slidev's configured base path.
@@ -29,7 +29,7 @@ npm ci
 npm run dev
 ```
 
-Slidev opens the one-slide example at `http://localhost:3030`. Click **Explore diagram**, then select a node in the Archify view.
+Slidev opens the one-slide example at `http://localhost:3030`. Click the diagram preview, then select a node in the Archify view.
 
 The demo pairs `public/diagrams/ai-sdlc-control-plane.svg` (static slide/PDF image) with `public/diagrams/ai-sdlc-control-plane.html` (interactive viewer). Its editable Archify source is in `diagrams/`.
 
@@ -61,7 +61,7 @@ Put the standalone Archify HTML and SVG under `public/`, then use one component:
 />
 ```
 
-`preview` and `src` are paths under `public/`, not remote URLs. Slidev's base URL is prepended automatically. Clicking anywhere on the SVG opens the explorer; the badge remains visible to communicate that behavior. The default labels are English; pass `button-label` and `close-label` to localize them.
+`preview` and `src` are paths under `public/`, not remote URLs. Slidev's base URL is prepended automatically. Clicking anywhere on the SVG opens the explorer, and the preview uses a zoom cursor to communicate that behavior. The default labels are English; pass `button-label` and `close-label` to localize them.
 
 For a custom preview or layout, provide slot content instead of `preview`; the slot is preserved in print mode:
 
