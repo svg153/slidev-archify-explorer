@@ -43,7 +43,7 @@
     "@slidev/cli": "^53.0.0",
     "@slidev/theme-default": "0.25.0",
     "@slidev/theme-seriph": "0.25.0",
-    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "conventional-changelog-conventionalcommits": "^10.0.0",
     "husky": "^9.1.7",
     "playwright-chromium": "1.63.0",
     "semantic-release": "^25.0.9"
