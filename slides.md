@@ -57,3 +57,7 @@ layout: default
     />
   </div>
 </div>
+
+---
+
+# Navigation keeps the explorer state local to its slide
