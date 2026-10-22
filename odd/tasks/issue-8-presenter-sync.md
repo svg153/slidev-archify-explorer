@@ -48,7 +48,7 @@ Implement the shared addon portion of roadmap issue #8 in the isolated worktree 
 
 ## Evidence
 
-- Work-unit commit: `15c041f` (`feat(explorer): sync presenter exploration state`).
+- Work-unit commit: `2587850` (`feat(explorer): sync presenter exploration state`).
 - Risk: item 1 — BroadcastChannel delivery remains same-origin and same-browser-profile; cross-origin diagrams stay standalone and cannot mirror focus.
 - Risk: item 2 — default session fallback cannot distinguish concurrent identical deployments; use explicit `sync-session` for that case.
 
