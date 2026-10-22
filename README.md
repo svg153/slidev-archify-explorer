@@ -78,7 +78,7 @@ Presenter mode syncs only the explorer state for the current slide. Messages are
 />
 ```
 
-The sync uses a narrowly named same-origin `BroadcastChannel`. Without `sync-session`, the fallback scope is the current origin, base path, and deck title; use the prop to separate concurrent rooms. It is additive: a normal standalone slide still opens and controls its own dialog, and print/PDF mode continues to render only the static preview.
+The sync uses a narrowly named same-origin `BroadcastChannel`. Without `sync-session`, the fallback scope is the current origin, base path, and deck title; use the prop to separate concurrent rooms. The channel is not sender authentication: trust scripts served from the deck origin. Only explorer state is sent, not speaker notes or slide contents. It is additive: a normal standalone slide still opens and controls its own dialog, and print/PDF mode continues to render only the static preview.
 
 For a custom preview or layout, provide slot content instead of `preview`; the slot is preserved in print mode:
 

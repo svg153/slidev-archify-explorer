@@ -102,7 +102,12 @@ function stopFocusObserver() {
   focusObserver?.disconnect()
   focusObserver = undefined
   if (frameWindow) {
-    frameWindow.removeEventListener('hashchange', publishFocus)
+    try {
+      frameWindow.removeEventListener('hashchange', publishFocus)
+    }
+    catch {
+      // A custom/remote iframe may have navigated cross-origin since load.
+    }
     frameWindow = undefined
   }
 }
@@ -115,14 +120,20 @@ function publishFocus() {
 
 function observeFrame() {
   stopFocusObserver()
-  const svg = frame.value?.contentDocument?.querySelector('svg')
-  if (!svg) return
-  focusObserver = new MutationObserver(publishFocus)
-  focusObserver.observe(svg, { attributes: true, attributeFilter: ['data-focus-active'] })
-  frameWindow = frame.value?.contentWindow || undefined
-  frameWindow?.addEventListener('hashchange', publishFocus)
-  applyPendingRemoteFocus()
-  publishFocus()
+  try {
+    const svg = frame.value?.contentDocument?.querySelector('svg')
+    if (!svg) return
+    focusObserver = new MutationObserver(publishFocus)
+    focusObserver.observe(svg, { attributes: true, attributeFilter: ['data-focus-active'] })
+    frameWindow = frame.value?.contentWindow || undefined
+    frameWindow?.addEventListener('hashchange', publishFocus)
+    applyPendingRemoteFocus()
+    publishFocus()
+  }
+  catch {
+    // A cross-origin custom iframe remains usable without presenter focus sync.
+    stopFocusObserver()
+  }
 }
 
 function onFrameLoad() {

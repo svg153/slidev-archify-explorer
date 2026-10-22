@@ -7,7 +7,8 @@ const interactivePath = new URL('diagrams/ai-sdlc-control-plane.html', baseUrl).
 const deckTitle = 'Archify Explorer for Slidev'
 const channelName = `slidev-addon-archify-explorer:${encodeURIComponent(deckTitle)}:${encodeURIComponent(new URL(baseUrl).pathname)}`
 const componentScope = 'diagrams/ai-sdlc-control-plane.html?theme=dark&embed=1|AI SDLC control plane'
-const sessionScope = `http://localhost:3030|/demo/|${deckTitle}`
+const baseUrlObject = new URL(baseUrl)
+const sessionScope = `${baseUrlObject.origin}|${baseUrlObject.pathname}|${deckTitle}`
 const deadline = Date.now() + 30_000
 while (Date.now() < deadline) {
   try {
@@ -82,11 +83,9 @@ try {
     return iframe?.contentDocument?.querySelector('svg')?.getAttribute('data-focus-active') === id
   }, nodeId)
 
-  await presenter.goto(new URL('presenter/2', baseUrl).href)
-  await presenter.waitForFunction(() => location.pathname.endsWith('/presenter/2'))
-  await audience.waitForFunction(() => location.pathname.endsWith('/demo/2') && !document.querySelector('dialog')?.open)
-  assert.equal(await presenter.locator('dialog[open]').count(), 0, 'slide navigation must close the presenter explorer')
-  await audience.waitForFunction(() => !document.querySelector('dialog')?.open)
+  await presenterDialog.getByRole('button', { name: 'Close' }).click()
+  await presenter.waitForFunction(() => !document.querySelector('dialog[open]')?.open)
+  await audience.waitForFunction(() => !document.querySelector('dialog[open]')?.open)
 
   await audience.evaluate(({ channel, slide, session, component }) => {
     const invalid = new BroadcastChannel(channel)
@@ -95,19 +94,46 @@ try {
       version: 1,
       deck: 'Archify Explorer for Slidev',
       session,
-      component: 'unrelated-component',
+      component,
       slide,
       open: true,
       focus: null,
       ...overrides,
     })
-    post({})
-    post({ session: 'unrelated-session', component })
+    post({ source: 'untrusted-addon' })
+    post({ version: 2 })
+    post({ deck: 'unrelated-deck' })
+    post({ session: 'unrelated-session' })
+    post({ focus: { forged: true } })
+    post({ open: 'yes' })
     post({ component: 'unrelated-component', slide: slide + 1 })
     invalid.close()
-  }, { channel: channelName, slide: 2, session: sessionScope, component: componentScope })
+  }, { channel: channelName, slide: 1, session: sessionScope, component: componentScope })
   await audience.waitForTimeout(100)
-  assert.equal(await audience.locator('dialog[open]').count(), 0, 'unrelated sync scopes must not open the audience')
+  assert.equal(await audience.locator('dialog[open]').count(), 0, 'malformed or mismatched sync messages must not open the audience')
+
+  const navigationPresenterTrigger = presenter.getByRole('button', { name: 'Explore diagram: AI SDLC control plane' })
+  await navigationPresenterTrigger.click()
+  await presenter.locator('dialog[open]').waitFor()
+  await audience.locator('dialog[open]').waitFor()
+  const crossOriginAccessErrors = []
+  audience.on('pageerror', error => {
+    if (error.name === 'SecurityError' || /cross-origin|blocked a frame/i.test(error.message))
+      crossOriginAccessErrors.push(`${error.message}\n${error.stack}`)
+  })
+  await audience.evaluate(() => new Promise(resolve => {
+    const frame = document.querySelector('dialog[open] iframe')
+    frame.addEventListener('load', resolve, { once: true })
+    frame.src = 'data:text/html,%3Csvg%3E%3C/svg%3E'
+  }))
+  assert.equal(await audience.locator('dialog[open]').count(), 1, 'cross-origin diagram stays usable in its dialog')
+  assert.deepEqual(crossOriginAccessErrors, [], 'cross-origin focus-sync fallback must not throw in the parent page')
+
+  await presenter.evaluate(() => window.__slidev__.nav.go(2))
+  await presenter.waitForFunction(() => location.pathname.endsWith('/presenter/2'))
+  await audience.waitForFunction(() => location.pathname.endsWith('/demo/2') && !document.querySelector('dialog[open]')?.open)
+  assert.equal(await presenter.locator('dialog[open]').count(), 0, 'client-side slide navigation must close the presenter explorer')
+  await audience.waitForFunction(() => !document.querySelector('dialog[open]')?.open)
   console.log('Component checks passed: preview, base path, accessibility, standalone dialog behavior, presenter sync, focus mirroring, and scope isolation.')
 } finally {
   await isolatedContext.close()
