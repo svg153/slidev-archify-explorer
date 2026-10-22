@@ -33,7 +33,7 @@ Implement the shared addon portion of roadmap issue #8 in the isolated worktree 
 
 ## Progress
 
-- Route: direct inline; named reason: user explicitly forbids further delegation.
+- Route: delegated direct for the isolated shared-addon behavior; parent owns integration, review and remote actions.
 - TDD: disabled/not explicitly enabled; normal checks.
 - Verification: `npm run test:component` passed with one shared BrowserContext for presenter/audience, a second isolated context, open/focus/close propagation, invalid scope rejection, and slide-navigation clearing. `npm run build`, `npm run build:pages`, `npm run test:pages`, and `npm run export` passed; `pdfinfo archify-explorer-demo.pdf` reports 2 pages. Export logs an existing FloatingVue/Popper console error but still completes successfully.
 - Session decision: add an optional explicit `sync-session` prop for concurrent same-origin deck instances; keep the origin/base/title fallback for backward compatibility.
@@ -51,11 +51,9 @@ Implement the shared addon portion of roadmap issue #8 in the isolated worktree 
 - Work-unit commit: `2587850` (`feat(explorer): sync presenter exploration state`).
 - Risk: item 1 — BroadcastChannel delivery remains same-origin and same-browser-profile; cross-origin diagrams stay standalone and cannot mirror focus.
 - Risk: item 2 — default session fallback cannot distinguish concurrent identical deployments; use explicit `sync-session` for that case.
+- Engram mirror: pending because the host has not registered an authoritative runtime session identity; no unassociated memory write was made.
+- Independent review is pending before any PR/merge.
 
 ## Next step
 
-T1 is committed; parent owns integration/release actions.
-
-## Next step
-
-Implement T1, run focused checks, update evidence, and commit with a Conventional Commit message.
+Parent reviews the independent verification, then creates and reviews the addon PR; after merge/release, consume it from the presentation branch.
