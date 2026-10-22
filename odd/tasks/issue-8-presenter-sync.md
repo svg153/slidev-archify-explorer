@@ -21,6 +21,7 @@ Implement the shared addon portion of roadmap issue #8 in the isolated worktree 
 ## Route and task checklist
 
 - [x] T1 — Implement and verify presenter explorer sync, tests, and minimal docs.
+- [ ] T2 — Restore changelog preset compatibility, verify release-note rendering, and confirm the merged main workflow publishes v1.3.0.
 
 ## Acceptance criteria and checks
 
@@ -55,7 +56,9 @@ Implement the shared addon portion of roadmap issue #8 in the isolated worktree 
 - Risk: item 3 — same-origin BroadcastChannel is not sender authentication; documentation now identifies the same-origin code trust boundary. The payload contains only explorer open/focus state.
 - Engram mirror: pending because the host has not registered an authoritative runtime session identity; no unassociated memory write was made.
 - Independent verification reviewed the first implementation, requested bounded fixes, then passed the corrections with no remaining blockers.
+- PR #41 merged at `ccfe66448ec87af3cbd58630a19b665d7117483b`, but its automatic v1.3.0 release failed before publication. The Actions log identifies an incompatible pair: `conventional-changelog-conventionalcommits@10.4.1` requires writer 9+, while `@semantic-release/release-notes-generator@14.1.1` resolves writer 8.4.0. Official changelog history documents that v9.3.1 retains the writer-8 template API while v10 introduced a renderer contract that rejects older writers. Follow-up will restore the compatible preset, validate release-note rendering, and confirm the automatic release publishes before consuming the addon in the presentation.
+- T2 sets the direct preset to exact `9.3.1` (the version listed by release-notes-generator 14.1.1 as its development test dependency), retaining writer 8.4.0 and isolating commitlint's own nested v10 dependency. `npm ci` passed; a direct `generateNotes` invocation rendered the expected v1.3.0 feature notes; `npm run build:pages`, `npm run test:pages`, `npm run test:component` (Slidev at port 3032), `npm run build`, and `git diff --check` passed. A first `test:pages` run without its documented build prerequisite failed because `dist/index.html` did not exist; rerunning in the workflow order passed. `npm ci` reports 29 existing audit findings (5 moderate, 22 high, 2 critical); dependency advisory remediation belongs to roadmap issue #14. Development-server output included pre-existing FloatingVue/Popper and browser Wake Lock warnings; the component suite passed.
 
 ## Next step
 
-Parent commits the bounded corrections, opens the addon PR, waits for CI and merges it; after release, consume it from the presentation branch.
+Open/review/merge the release-compatibility PR, confirm CI and automatic semantic-release publish v1.3.0, then consume the published addon version from the presentation branch and finish issue #8.
