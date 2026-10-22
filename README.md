@@ -21,6 +21,7 @@
 - Keeps the static preview in Slidev PDF/print mode and omits the interactive controls.
 - Supports a default preview prop and a slot for custom preview/layout content.
 - Button and close labels can be localized.
+- In presenter mode, mirrors this component's open, focused-node, and close state to the matching audience slide.
 
 ## Try the demo
 
@@ -50,6 +51,8 @@ addons:
 
 Put the standalone Archify HTML and SVG under `public/`, then use one component:
 
+Concurrent sessions using the same origin, base path, and deck title should pass a shared explicit `sync-session` value; the fallback scope is the current origin, base path, and deck title.
+
 ```md
 <ArchifyExplorer
   preview="diagrams/system.svg"
@@ -62,6 +65,20 @@ Put the standalone Archify HTML and SVG under `public/`, then use one component:
 ```
 
 `preview` and `src` are paths under `public/`, not remote URLs. Slidev's base URL is prepended automatically. Clicking anywhere on the SVG opens the explorer, and the preview uses a zoom cursor to communicate that behavior. The default labels are English; pass `button-label` and `close-label` to localize them.
+
+Presenter mode syncs only the explorer state for the current slide. Messages are scoped to the same-origin deck title/base path and component; they never include presenter notes or slide content. If a slide contains multiple explorers with the same `src` and `title`, give each pair a distinct `sync-key`:
+
+```md
+<ArchifyExplorer
+  preview="diagrams/system.svg"
+  src="diagrams/system.html"
+  title="System architecture"
+  sync-key="system-overview"
+  sync-session="room-a"
+/>
+```
+
+The sync uses a narrowly named same-origin `BroadcastChannel`. Without `sync-session`, the fallback scope is the current origin, base path, and deck title; use the prop to separate concurrent rooms. The channel is not sender authentication: trust scripts served from the deck origin. Only explorer state is sent, not speaker notes or slide contents. It is additive: a normal standalone slide still opens and controls its own dialog, and print/PDF mode continues to render only the static preview.
 
 For a custom preview or layout, provide slot content instead of `preview`; the slot is preserved in print mode:
 
